@@ -14,9 +14,9 @@ export default function AppMovies() {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const { data } = await movieService.getAll();
+      const data = await movieService.getAll();
 
-      setMovies(data);
+      setMovies(data.data);
     };
     fetchMovies();
   }, []);

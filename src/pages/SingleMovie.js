@@ -20,8 +20,10 @@ export default function SingleMovie() {
   );
 
   useEffect(() => {
+    console.log(movie.image_url);
     const fetchMovie = async () => {
       const data = await movieService.get(id);
+      console.log(data.image_url);
       setMovie(data);
     };
 
