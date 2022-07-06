@@ -7,7 +7,6 @@ export default function AddMovie() {
     title: "",
     director: "",
     image_url: "",
-    duration: 0,
     release_date: "",
     genre: "",
   });
@@ -38,7 +37,6 @@ export default function AddMovie() {
       title: "",
       director: "",
       image_url: "",
-      duration: 0,
       release_date: "",
       genre: "",
     });
@@ -88,17 +86,6 @@ export default function AddMovie() {
           placeholder="Image url"
           onChange={({ target }) =>
             setMovieData({ ...movieData, image_url: target.value })
-          }
-        />
-        <input
-          required
-          type="number"
-          min={1}
-          max={600}
-          value={movieData.duration}
-          placeholder="Duration"
-          onChange={({ target }) =>
-            setMovieData({ ...movieData, duration: target.value })
           }
         />
         <input

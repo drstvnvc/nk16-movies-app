@@ -8,7 +8,6 @@ export default function SingleMovie() {
     title: "",
     director: "",
     image_url: "",
-    duration: 1,
     release_date: "",
     genre: "",
   });
@@ -41,7 +40,6 @@ export default function SingleMovie() {
       <img src={movie.image_url} width="300" height="300" />
       <p>Genre: {movie.genre}</p>
       <p>Release date: {formattedDate}</p>
-      <p>Duration: {movie.duration}</p>
     </div>
   );
 }
