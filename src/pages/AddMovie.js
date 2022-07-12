@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import movieService from "../services/MovieService";
+import { addMovie } from "../store/movies/slice";
 
 export default function AddMovie() {
+  const dispatch = useDispatch();
+
   const [movieData, setMovieData] = useState({
     title: "",
     director: "",
@@ -16,19 +20,21 @@ export default function AddMovie() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let data = null;
 
     if (id) {
-      data = await movieService.edit(id, movieData);
+      let data = await movieService.edit(id, movieData);
       history.push("/movies");
     } else {
-      data = await movieService.add(movieData);
-      history.push(`movies/${data.id}`);
-    }
-
-    if (!data) {
-      alert("The new movie is not created");
-      return;
+      dispatch(
+        addMovie({
+          movie: movieData,
+          meta: {
+            onSuccess: (movie) => {
+              history.push(`movies/${movie.id}`);
+            },
+          },
+        })
+      );
     }
   };
 

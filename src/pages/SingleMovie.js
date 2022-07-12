@@ -1,38 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { Redirect, useParams } from "react-router-dom";
 import useFormattedDate from "../hooks/useFormattedDate";
-import movieService from "../services/MovieService";
+import { selectMovie } from "../store/movies/selectors";
+import { getMovie } from "../store/movies/slice";
 
 export default function SingleMovie() {
-  const [movie, setMovie] = useState({
-    title: "",
-    director: "",
-    image_url: "",
-    release_date: "",
-    genre: "",
-  });
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const { id } = useParams();
+  const movie = useSelector(selectMovie);
+
   const formattedDate = useFormattedDate(
     movie ? movie.release_date : "",
     "yyyy-MM-dd"
   );
 
   useEffect(() => {
-    const fetchMovie = async () => {
-      const data = await movieService.get(id);
-      setMovie(data);
-    };
-
     if (id) {
-      fetchMovie();
+      dispatch(
+        getMovie({
+          id,
+          meta: {
+            onError: () => history.push("/movies"),
+          },
+        })
+      );
     }
   }, [id]);
 
   if (!movie) {
-    return <Redirect to="/movies" />;
+    return null;
   }
-
   return (
     <div style={{ marginLeft: 5 }}>
       <h2>{movie.title}</h2>

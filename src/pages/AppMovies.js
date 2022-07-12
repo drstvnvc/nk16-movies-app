@@ -1,30 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import movieService from "../services/MovieService";
+
+import { selectMovies } from "../store/movies/selectors";
+import { deleteMovie, getMovies } from "../store/movies/slice";
 
 export default function AppMovies() {
-  const [movies, setMovies] = useState([]);
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  const handleDelete = async (id) => {
-    await movieService.delete(id);
+  const movies = useSelector(selectMovies);
 
-    setMovies(movies.filter((movie) => movie.id !== id));
+  const handleDelete = (id) => {
+    dispatch(deleteMovie(id));
   };
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      const { data } = await movieService.getAll();
-
-      setMovies(data);
-    };
-    fetchMovies();
+    dispatch(getMovies());
   }, []);
 
   return (
     <div style={{ marginLeft: 5 }}>
       <h2>Movies</h2>
-      {movies.map((movie) => (
+      {movies.data.map((movie) => (
         <div
           key={movie.id}
           style={{

@@ -3,6 +3,7 @@ import createSagaMiddleware from "redux-saga";
 
 import counterReducer from "./counter/slice";
 import authReducer from "./auth/slice";
+import moviesReducer from "./movies/slice";
 import sagas from "./sagas";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -11,6 +12,7 @@ const store = configureStore({
   reducer: {
     counter: counterReducer,
     auth: authReducer,
+    movies: moviesReducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware({ thunk: false }),
