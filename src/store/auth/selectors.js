@@ -4,3 +4,9 @@ export function selectIsAuthenticated(state) {
 export function selectActiveUser(state) {
   return state.auth.activeUser;
 }
+export function selectRegistrationErrors(state) {
+  return state.auth.registrationErrors;
+}
+export function selectLoginError(state) {
+  return state.auth.loginError;
+}

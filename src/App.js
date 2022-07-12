@@ -17,7 +17,7 @@ import authService from "./services/AuthService";
 import Counter from "./pages/Counter";
 import { selectCounterValue } from "./store/counter/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, setActiveUser } from "./store/auth/slice";
+import { getActiveUser, logout, setActiveUser } from "./store/auth/slice";
 import {
   selectActiveUser,
   selectIsAuthenticated,
@@ -30,22 +30,12 @@ function App() {
   const counter = useSelector(selectCounterValue);
 
   async function handleLogout() {
-    try {
-      await authService.logout();
-    } catch {
-    } finally {
-      dispatch(logout());
-    }
+    dispatch(logout());
   }
 
   useEffect(() => {
-    async function loadActiveUser() {
-      const activeUser = await authService.getActiveUser();
-      dispatch(setActiveUser(activeUser));
-    }
-
     if (isAuthenticated) {
-      loadActiveUser();
+      dispatch(getActiveUser());
     }
   }, []);
   return (

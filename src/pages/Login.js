@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectLoginError } from "../store/auth/selectors";
 
-import authService from "../services/AuthService";
-import { setActiveUser, setToken } from "../store/auth/slice";
+import { login } from "../store/auth/slice";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -11,11 +11,11 @@ export default function Login() {
     password: "",
   });
 
+  const loginError = useSelector(selectLoginError);
+
   async function handleSubmit(e) {
     e.preventDefault();
-    const data = await authService.login(credentials);
-    dispatch(setToken(data.token));
-    dispatch(setActiveUser(data.user));
+    dispatch(login(credentials));
   }
 
   return (
@@ -42,6 +42,9 @@ export default function Login() {
             setCredentials({ ...credentials, password: target.value })
           }
         />
+        {loginError && (
+          <span style={{ color: "red" }}>Invalid credentials</span>
+        )}
         <button>Login</button>
       </form>
     </div>

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import authService from "../services/AuthService";
-import { setActiveUser, setToken } from "../store/auth/slice";
+import { register } from "../store/auth/slice";
+import { selectRegistrationErrors } from "../store/auth/selectors";
 
 export default function Register() {
   const dispatch = useDispatch();
@@ -12,11 +12,11 @@ export default function Register() {
     name: "",
   });
 
+  const errors = useSelector(selectRegistrationErrors);
+
   async function handleSubmit(e) {
     e.preventDefault();
-    const data = await authService.register(userData);
-    dispatch(setToken(data.token));
-    dispatch(setActiveUser(data.user));
+    dispatch(register(userData));
   }
 
   return (
@@ -35,6 +35,9 @@ export default function Register() {
             setUserData({ ...userData, email: target.value })
           }
         />
+        {errors?.email?.length && (
+          <span style={{ color: "red" }}>{errors.email[0]}</span>
+        )}
         <input
           required
           value={userData.password}
@@ -44,6 +47,10 @@ export default function Register() {
             setUserData({ ...userData, password: target.value })
           }
         />
+        {errors?.password?.length && (
+          <span style={{ color: "red" }}>{errors.password[0]}</span>
+        )}
+
         <input
           required
           value={userData.name}
@@ -52,6 +59,9 @@ export default function Register() {
             setUserData({ ...userData, name: target.value })
           }
         />
+        {errors?.name?.length && (
+          <span style={{ color: "red" }}>{errors.name[0]}</span>
+        )}
         <button>Register</button>
       </form>
     </div>
