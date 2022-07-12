@@ -18,8 +18,13 @@ class AuthService extends HttpService {
   }
 
   async logout() {
-    await this.client.post("/logout");
     localStorage.removeItem("token");
+    await this.client.post("/logout");
+  }
+
+  async getActiveUser() {
+    const { data } = await this.client.get("/profile");
+    return data;
   }
 }
 

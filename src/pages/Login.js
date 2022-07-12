@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import authService from "../services/AuthService";
+import { setActiveUser, setToken } from "../store/auth/slice";
 
-export default function Login({ onLogin }) {
+export default function Login() {
+  const dispatch = useDispatch();
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
 
-  const history = useHistory();
-
   async function handleSubmit(e) {
     e.preventDefault();
-    await authService.login(credentials);
-    onLogin();
-    history.push("/");
+    const data = await authService.login(credentials);
+    dispatch(setToken(data.token));
+    dispatch(setActiveUser(data.user));
   }
 
   return (
